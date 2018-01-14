@@ -71,9 +71,11 @@ app.listen(3000);
 app.use(Permission(options).unless({ path: [/^\/public\//] }));
 ```
 
-# Prerequisites
+# Remarks
 
-A user authenticating method may be need to provide valid user roles, [koa-jwt](https://github.com/koajs/jwt) can be used here.
+* A user authenticating method may be needed to provide valid user roles, [koa-jwt](https://github.com/koajs/jwt) can be used here.
+
+* Role "admin" has special meaning, which will bypass all acl rule checks, nor can it be blacklisted.
 
 # License
 
