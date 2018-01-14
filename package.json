@@ -1,0 +1,19 @@
+{
+  "name": "yapmk",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "koa-unless": "^1.0.7"
+  },
+  "devDependencies": {
+    "koa": "^2.4.1",
+    "mocha": "^4.1.0",
+    "supertest": "^3.0.0"
+  }
+}
