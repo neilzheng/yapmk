@@ -6,12 +6,13 @@ const createApp = require('./server');
 const getRoles = ctx => ctx.state.auth.roleNames;
 
 describe('reject all', () => {
+  const acls = [
+    {
+      action: 'reject'
+    }
+  ];
+
   describe('user access', () => {
-    const acls = [
-      {
-        action: 'reject'
-      }
-    ];
     const app = createApp(['user']);
     app.use(ACL({ getRoles, acls }));
     app.use((ctx, next) => {
@@ -38,12 +39,13 @@ describe('reject all', () => {
 });
 
 describe('admin rules all', () => {
+  const acls = [
+    {
+      action: 'reject'
+    }
+  ];
+
   describe('admin access', () => {
-    const acls = [
-      {
-        action: 'reject'
-      }
-    ];
     const app = createApp(['user', 'admin']);
     app.use(ACL({ getRoles, acls }));
     app.use((ctx, next) => {
@@ -70,12 +72,13 @@ describe('admin rules all', () => {
 });
 
 describe('reject unless public', () => {
+  const acls = [
+    {
+      action: 'reject'
+    }
+  ];
+
   describe('user access', () => {
-    const acls = [
-      {
-        action: 'reject'
-      }
-    ];
     const app = createApp(['user']);
     app.use(ACL({ getRoles, acls }).unless({ path: [/^\/public\//] }));
     app.use((ctx, next) => {
@@ -102,12 +105,13 @@ describe('reject unless public', () => {
 });
 
 describe('accept all', () => {
+  const acls = [
+    {
+      action: 'accept'
+    }
+  ];
+
   describe('user access', () => {
-    const acls = [
-      {
-        action: 'accept'
-      }
-    ];
     const app = createApp(['user']);
     app.use(ACL({ getRoles, acls }));
     app.use((ctx, next) => {
@@ -134,19 +138,20 @@ describe('accept all', () => {
 });
 
 describe('auser can access apple, buser can access banana', () => {
+  const acls = [
+    {
+      path: '^/apple/',
+      role: 'auser',
+      action: 'accept'
+    },
+    {
+      path: '^/banana/',
+      role: 'buser',
+      action: 'accept'
+    }
+  ];
+
   describe('auser access', () => {
-    const acls = [
-      {
-        path: '^/apple/',
-        role: 'auser',
-        action: 'accept'
-      },
-      {
-        path: '^/banana/',
-        role: 'buser',
-        action: 'accept'
-      }
-    ];
     const app = createApp(['auser']);
     app.use(ACL({ getRoles, acls }));
     app.use((ctx, next) => {
@@ -184,18 +189,6 @@ describe('auser can access apple, buser can access banana', () => {
   });
 
   describe('buser access', () => {
-    const acls = [
-      {
-        path: '^/apple/',
-        role: 'auser',
-        action: 'accept'
-      },
-      {
-        path: '^/banana/',
-        role: 'buser',
-        action: 'accept'
-      }
-    ];
     const app = createApp(['buser']);
     app.use(ACL({ getRoles, acls }));
     app.use((ctx, next) => {
@@ -234,21 +227,22 @@ describe('auser can access apple, buser can access banana', () => {
 });
 
 describe('user can get, manager can post', () => {
+  const acls = [
+    {
+      path: '^/apple/',
+      role: 'user',
+      methods: ['get'],
+      action: 'accept'
+    },
+    {
+      path: '^/apple/',
+      role: 'manager',
+      methods: ['post'],
+      action: 'accept'
+    }
+  ];
+
   describe('user access', () => {
-    const acls = [
-      {
-        path: '^/apple/',
-        role: 'user',
-        methods: ['get'],
-        action: 'accept'
-      },
-      {
-        path: '^/apple/',
-        role: 'manager',
-        methods: ['post'],
-        action: 'accept'
-      }
-    ];
     const app = createApp(['user']);
     app.use(ACL({ getRoles, acls }));
     app.use((ctx, next) => {
@@ -274,20 +268,6 @@ describe('user can get, manager can post', () => {
   });
 
   describe('manager access', () => {
-    const acls = [
-      {
-        path: '^/apple/',
-        role: 'user',
-        methods: ['get'],
-        action: 'accept'
-      },
-      {
-        path: '^/apple/',
-        role: 'manager',
-        methods: ['post'],
-        action: 'accept'
-      }
-    ];
     const app = createApp(['user', 'manager']);
     app.use(ACL({ getRoles, acls }));
     app.use((ctx, next) => {
@@ -314,16 +294,17 @@ describe('user can get, manager can post', () => {
 });
 
 describe('block bad user', () => {
+  const acls = [
+    {
+      role: 'baduser',
+      action: 'reject'
+    },
+    {
+      action: 'accept'
+    }
+  ];
+
   describe('user access', () => {
-    const acls = [
-      {
-        role: 'baduser',
-        action: 'reject'
-      },
-      {
-        action: 'accept'
-      }
-    ];
     const app = createApp(['user']);
     app.use(ACL({ getRoles, acls }));
     app.use((ctx, next) => {
