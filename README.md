@@ -40,7 +40,7 @@ server.js
 const Koa = require('koa');
 const Jwt = require('koa-jwt');
 const Permission = require('yapmk'):
-const acls = requre('./acls');
+const acl = requre('./acl');
 
 const app = new Koa();
 
@@ -48,7 +48,7 @@ app.use(Jwt({ secret: 'my jwt secret' }));
 
 const options = {
   getRoles: ctx => ctx.state.auth.roleNames,
-  acls
+  acl
 };
 
 app.use(Permission(options));
