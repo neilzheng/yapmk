@@ -259,7 +259,8 @@ describe('user can get, manager can post', () => {
     });
 
     it('should response 403 for post /apple/', (done) => {
-      req.post('/apple/', { data: 'test' })
+      req.post('/apple/')
+        .send({ data: 'test' })
         .expect(403)
         .end(done);
     });
@@ -284,7 +285,8 @@ describe('user can get, manager can post', () => {
     });
 
     it('should response 200 for post /apple/', (done) => {
-      req.post('/apple/', { data: 'test' })
+      req.post('/apple/')
+        .send({ data: 'test' })
         .expect(200)
         .end(done);
     });
