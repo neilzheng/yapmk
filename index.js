@@ -1,12 +1,5 @@
 const unless = require('koa-unless');
 
-const arrayHas = (arr, item) => {
-  for (let i = 0; i < arr.length; i += 1) {
-    if (item === arr[i]) return true;
-  }
-  return false;
-};
-
 const normalizeAcl = acl => acl.map((rule) => {
   if (!rule.action) throw new TypeError('action must be set in ACL rule');
 
@@ -21,13 +14,13 @@ const normalizeAcl = acl => acl.map((rule) => {
       }
 
       if (this.methods &&
-          !arrayHas(this.methods, method)) {
+          !this.methods.includes(method)) {
         return false;
       }
 
       if (this.role) {
         for (let i = 0; i < roleNames.length; i += 1) {
-          if (arrayHas(roleNames, this.role)) return true;
+          if (roleNames.includes(this.role)) return true;
         }
         return false;
       }
@@ -47,7 +40,7 @@ module.exports = (opts) => {
     const { path, method } = ctx;
     const roleNames = getRoles(ctx);
 
-    if (arrayHas(roleNames, 'admin')) return next();
+    if (roleNames.includes('admin')) return next();
 
     for (let i = 0; i < realAcl.length; i += 1) {
       const rule = realAcl[i];
